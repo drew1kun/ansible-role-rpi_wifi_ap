@@ -1,4 +1,4 @@
-Ansible role: bootstrap_core
+Ansible role: minibian_core
 =========
 
 [![MIT licensed][mit-badge]][mit-link]
@@ -8,9 +8,9 @@ Ansible role for setting up RaspberryPi as wireless Access Point.
 
 Role accomplishes the following:
 
- - installs and configures isc-dchp-server
- - installs iptables-persistent and configures iptables to use NAT
- - installs and configures hostapd
+ - installs and configures `isc-dchp-server`
+ - installs `iptables-persistent` and configures `iptables` to use NAT
+ - installs and configures `hostapd`
 
 Requirements
 ------------
@@ -46,7 +46,7 @@ Example Playbook
 
     - hosts: raspberrypi
       gather_facts: yes
-      roles: drew-kun.bootstrap_core
+      roles: drew-kun.minibian_ap
 
 License
 -------
