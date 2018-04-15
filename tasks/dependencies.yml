@@ -9,16 +9,16 @@
     state: latest
   become: yes
   tags:
-    - minibian_ap
-    - minibian_ap_dependencies
+    - wifi_ap
+    - wifi_ap_dependencies
 
 - name: '[dependencies] Install iptables-persistent'
   package: name=iptables-persistent state=present
-  register: minibian_ap_iptables_install
+  register: wifi_ap_iptables_install
   become: yes
   tags:
-    - minibian_ap
-    - minibian_ap_dependencies
+    - wifi_ap
+    - wifi_ap_dependencies
 
 # haven't find a solution without reboot
 # Although the reboot happens we still need all handlers to be run
@@ -27,10 +27,10 @@
   async: 1
   poll: 0
   become: yes
-  when: minibian_ap_iptables_install.changed
+  when: wifi_ap_iptables_install.changed
   tags:
-    - minibian_ap
-    - minibian_ap_dependencies
+    - wifi_ap
+    - wifi_ap_dependencies
 
 # ansible_ssh_host variable is set in ansible inventory (hosts) file
 - name: Waiting for managed host to come back after reboot
@@ -40,8 +40,8 @@
       port=22
       delay=1
   become: no
-  when: minibian_ap_iptables_install.changed
+  when: wifi_ap_iptables_install.changed
   tags:
-    - minibian_ap
-    - minibian_ap_dependencies
+    - wifi_ap
+    - wifi_ap_dependencies
 ...

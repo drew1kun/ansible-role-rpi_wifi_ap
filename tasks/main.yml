@@ -1,44 +1,44 @@
 ---
-# tasks file for ansible-minibian_ap
+# tasks file for ansible-wifi_ap
 
 # Network
-- name: "[main] /etc/network/interfaces: Find and comment all lines containing {{ minibian_ap_WLAN }}"
+- name: "[main] /etc/network/interfaces: Find and comment all lines containing {{ wifi_ap_WLAN }}"
   replace:
     path: /etc/network/interfaces
-    regexp: '(^[^#\n].*{{ minibian_ap_WLAN }}.*$)'
+    regexp: '(^[^#\n].*{{ wifi_ap_WLAN }}.*$)'
     replace: '#\1'
     before: '# Access Point interface settings:'
   become: yes
-  notify: '[minibian_ap] Systemd daemon-reload'
+  notify: '[wifi_ap] Systemd daemon-reload'
   tags:
-    - minibian_ap
+    - wifi_ap
 
-- name: "[main] /etc/network/interfaces: Find and comment all {{ minibian_ap_WLAN }}-related settings"
+- name: "[main] /etc/network/interfaces: Find and comment all {{ wifi_ap_WLAN }}-related settings"
   replace:
     path: /etc/network/interfaces
-    regexp: '(^[#].*{{ minibian_ap_WLAN }}.*$)\n(\s.*$)'
+    regexp: '(^[#].*{{ wifi_ap_WLAN }}.*$)\n(\s.*$)'
     replace: '\1\n#\2'
     before: '# Access Point interface settings:'
   become: yes
-  notify: '[minibian_ap] Systemd daemon-reload'
+  notify: '[wifi_ap] Systemd daemon-reload'
   tags:
-    - minibian_ap
+    - wifi_ap
 
-- name: "[main] Configure {{ minibian_ap_WLAN }} (ip: {{ minibian_ap_WLAN_ip }}; netmask: {{ minibian_ap_WLAN_netmask }}) in /etc/network/interfaces"
+- name: "[main] Configure {{ wifi_ap_WLAN }} (ip: {{ wifi_ap_WLAN_ip }}; netmask: {{ wifi_ap_WLAN_netmask }}) in /etc/network/interfaces"
   blockinfile:
-    marker: '#{mark} Added by drew-kun.minibian_ap asnible role'
+    marker: '#{mark} Added by drew-kun.wifi_ap asnible role'
     path: /etc/network/interfaces
     block: |
       # Access Point interface settings:
-      auto {{ minibian_ap_WLAN }}
-      #allow-hotplug {{ minibian_ap_WLAN }}
-      iface {{ minibian_ap_WLAN }} inet static
-        address {{ minibian_ap_WLAN_ip }}
-        netmask {{ minibian_ap_WLAN_netmask }}
+      auto {{ wifi_ap_WLAN }}
+      #allow-hotplug {{ wifi_ap_WLAN }}
+      iface {{ wifi_ap_WLAN }} inet static
+        address {{ wifi_ap_WLAN_ip }}
+        netmask {{ wifi_ap_WLAN_netmask }}
   become: yes
-  notify: '[minibian_ap] Systemd daemon-reload'
+  notify: '[wifi_ap] Systemd daemon-reload'
   tags:
-    - minibian_ap
+    - wifi_ap
 
 - name: "[main] Turn on ip forwarding on in /proc and in the sysctl file and reload if necessary"
   sysctl:
@@ -49,14 +49,14 @@
     reload: yes
   become: yes
   tags:
-    - minibian_ap
+    - wifi_ap
 
 # Dependencies (tasks/dependencies.yml)
 # Contain Reboot instructions for iptables kernel modules reload
 - name: "[main] Include dependencies installation tasks"
   include_tasks: dependencies.yml
   tags:
-    - minibian_ap
+    - wifi_ap
 
 # DHCP
 - name: "[main] Generate /etc/dhcp/dhcpd.conf"
@@ -68,20 +68,20 @@
     mode: 0644
     backup: yes
   become: yes
-  notify: '[minibian_ap] Restart dhcp daemon'
+  notify: '[wifi_ap] Restart dhcp daemon'
   tags:
-    - minibian_ap
+    - wifi_ap
 
-- name: "[main] Specify 'INTERFACES={{ minibian_ap_WLAN }}' in /etc/default/isc-dhcp-server"
+- name: "[main] Specify 'INTERFACES={{ wifi_ap_WLAN }}' in /etc/default/isc-dhcp-server"
   lineinfile:
     path: /etc/default/isc-dhcp-server
     regexp: 'INTERFACES=".*"'
-    line: 'INTERFACES="{{ minibian_ap_WLAN }}"'
+    line: 'INTERFACES="{{ wifi_ap_WLAN }}"'
     state: present
   become: yes
-  notify: '[minibian_ap] Restart dhcp daemon'
+  notify: '[wifi_ap] Restart dhcp daemon'
   tags:
-    - minibian_ap
+    - wifi_ap
 
 # HostAPd
 - name: "[main] Generate /etc/hostapd/hostapd.conf"
@@ -92,9 +92,9 @@
     group: root
     mode: 0644
   become: yes
-  notify: '[minibian_ap] Restart hostapd daemon'
+  notify: '[wifi_ap] Restart hostapd daemon'
   tags:
-    - minibian_ap
+    - wifi_ap
 
 - name: "[main] Add 'DAEMON_CONF=/etc/hostapd/hostapd.conf' to /etc/default/hostapd"
   lineinfile:
@@ -103,26 +103,26 @@
     line: 'DAEMON_CONF="/etc/hostapd/hostapd.conf"'
     state: present
   become: yes
-  notify: '[minibian_ap] Restart hostapd daemon'
+  notify: '[wifi_ap] Restart hostapd daemon'
   tags:
-    - minibian_ap
+    - wifi_ap
 
 # IPTables (tasks/iptables.yml)
 - name: "[main] Include tasks from iptables.yml"
   include_tasks: iptables.yml
   tags:
-    - minibian_ap
+    - wifi_ap
 
 - name: "[main] Flush all handlers before reboot"
   meta: flush_handlers
   tags:
-    - minibian_ap
+    - wifi_ap
 
 - name: "[main] Access Point ESSID"
   debug:
     msg:
       - "Configuration is done"
-      - "the Access Point name: {{ minibian_ap_essid }}"
+      - "the Access Point name: {{ wifi_ap_essid }}"
   tags:
-    - minibian_ap
+    - wifi_ap
 ...

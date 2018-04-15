@@ -101,10 +101,10 @@ log-facility local7;
 #  }
 #}
 
-subnet {{ minibian_ap_WLAN_subnet }} netmask {{ minibian_ap_WLAN_netmask }} {
-	range {{ minibian_ap_dhcp_range[0] }} {{ minibian_ap_dhcp_range[1] }};
-	option broadcast-address {{ minibian_ap_WLAN_broadcast }};
-	option routers {{ minibian_ap_WLAN_ip }};
+subnet {{ wifi_ap_WLAN_subnet }} netmask {{ wifi_ap_WLAN_netmask }} {
+	range {{ wifi_ap_dhcp_range[0] }} {{ wifi_ap_dhcp_range[1] }};
+	option broadcast-address {{ wifi_ap_WLAN_broadcast }};
+	option routers {{ wifi_ap_WLAN_ip }};
 	default-lease-time 600;
 	max-lease-time 7200;
 	option domain-name "local";
