@@ -10,8 +10,8 @@ wifi_ap_WLAN_broadcast: 192.168.42.255
 wifi_ap_WLAN_ip: 192.168.42.1
 wifi_ap_dhcp_range: [192.168.42.100, 192.168.42.199]
 
-wifi_ap_essid: {{ vault_wifi_ap_essid }}
-wifi_ap_wpa_passphrase: {{ vault_wifi_ap_passphrase }}
+wifi_ap_essid: "{{ vault_wifi_ap_essid }}"
+wifi_ap_wpa_passphrase: "{{ vault_wifi_ap_passphrase }}"
 
 wifi_ap_flush_iptables: no      # no - for fresh install; yes - removes idempotency (always yellow).
 ...

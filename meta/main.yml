@@ -13,10 +13,12 @@ galaxy_info:
   - name: Debian
     versions:
     - jessie
+    - stretch
 
   galaxy_tags:
   - ap
   - networking
 
-dependencies: []
+dependencies:
+#- drew-kun.rpi3_network
 ...
