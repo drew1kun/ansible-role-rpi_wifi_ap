@@ -12,6 +12,10 @@ Role accomplishes the following:
  - installs `iptables-persistent` and configures `iptables` to use NAT
  - installs and configures `hostapd`
 
+NOTE: The role uses ansible `replace` module wich is currently broken:
+the module's `before/after` properties work other way around.
+The [issue][ansible-replace-issue-link] is still open, but may change in the future.
+
 Requirements
 ------------
 
@@ -60,7 +64,11 @@ Role Variables
 Dependencies
 ------------
 
-None.
+ - [drew-kun.rpi3_network][rpi3_network-galaxy-link]
+
+Install it galaxy:
+
+    ansible-galaxy install drew-kun.rpi_expandfs drew-kun.rpi3_network
 
 Example Playbook
 ----------------
@@ -85,3 +93,5 @@ Andrew Shagayev | [e-mail](mailto:drewshg@gmail.com)
 [mit-link]: https://raw.githubusercontent.com/drew-kun/ansible-wifi_ap/master/LICENSE
 [minibian-link]: https://minibianpi.wordpress.com/
 [ansible-vault-link]: https://docs.ansible.com/ansible/latest/user_guide/vault.html
+[rpi3_network-galaxy-link]: https://galaxy.ansible.com/drew-kun/rpi3_network/
+[ansible-replace-issue-link]: https://github.com/ansible/ansible/issues/31354
