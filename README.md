@@ -1,4 +1,4 @@
-Ansible role: minibian_core
+Ansible role: wifi_ap
 =========
 
 [![MIT licensed][mit-badge]][mit-link]
@@ -87,7 +87,7 @@ Author Information
 
 Andrew Shagayev | [e-mail](mailto:drewshg@gmail.com)
 
-[role-badge]: https://img.shields.io/badge/role-drew--kun.minibian__ap-green.svg
+[role-badge]: https://img.shields.io/badge/role-drew--kun.wifi__ap-green.svg
 [galaxy-link]: https://galaxy.ansible.com/drew-kun/wifi_ap/
 [mit-badge]: https://img.shields.io/badge/license-MIT-blue.svg
 [mit-link]: https://raw.githubusercontent.com/drew-kun/ansible-wifi_ap/master/LICENSE
