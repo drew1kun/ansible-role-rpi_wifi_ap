@@ -20,5 +20,5 @@ galaxy_info:
   - networking
 
 dependencies:
-#- drew-kun.rpi3_network
+- drew-kun.rpi3_network
 ...
