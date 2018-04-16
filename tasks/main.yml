@@ -76,7 +76,7 @@
   lineinfile:
     path: /etc/default/isc-dhcp-server
     regexp: '(INTERFACESv[46]=)".*"'
-    line: '\1="{{ wifi_ap_WLAN }}"'
+    line: '\1"{{ wifi_ap_WLAN }}"'
     backrefs: yes
     state: present
   become: yes
