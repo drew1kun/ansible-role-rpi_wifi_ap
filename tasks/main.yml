@@ -75,8 +75,8 @@
 - name: "[main] Specify 'INTERFACES={{ wifi_ap_WLAN }}' in /etc/default/isc-dhcp-server"
   lineinfile:
     path: /etc/default/isc-dhcp-server
-    regexp: 'INTERFACES=".*"'
-    line: 'INTERFACES="{{ wifi_ap_WLAN }}"'
+    regexp: '(INTERFACESv[46]=)".*"'
+    line: '\1="{{ wifi_ap_WLAN }}"'
     state: present
   become: yes
   notify: '[wifi_ap] Restart dhcp daemon'
