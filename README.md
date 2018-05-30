@@ -33,7 +33,7 @@ which is encrypted with [ansible-vault][ansible-vault-link].
 
 Before running the role decrypt the file *vars/main.yml* with:
 
-    ansible-vault decrypt vars/main.yml --vault-password-file=.vault.key`
+    ansible-vault decrypt vars/main.yml --vault-password-file=.vault.key
 
 OR set environment variable:
 
