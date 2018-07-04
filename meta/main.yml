@@ -16,9 +16,12 @@ galaxy_info:
     - stretch
 
   galaxy_tags:
-  - ap
+  - raspberrypi
   - networking
+  - wifi
+  - wireless
+  - access_point
 
 dependencies:
-- drew-kun.rpi3_network
+- drew_kun.rpi3_network
 ...
