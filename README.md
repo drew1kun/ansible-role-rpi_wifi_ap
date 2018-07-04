@@ -64,18 +64,18 @@ Role Variables
 Dependencies
 ------------
 
- - [drew_kun.rpi3_network][rpi3_network-galaxy-link]
+ - [drew-kun.rpi3_network][rpi3_network-galaxy-link]
 
 Install it galaxy:
 
-    ansible-galaxy install drew_kun.rpi_expandfs drew_kun.rpi3_network
+    ansible-galaxy install drew-kun.rpi_expandfs drew-kun.rpi3_network
 
 Example Playbook
 ----------------
 
     - hosts: raspberrypi
       gather_facts: yes
-      roles: drew_kun.wifi_ap
+      roles: drew-kun.wifi_ap
 
 License
 -------
@@ -87,11 +87,11 @@ Author Information
 
 Andrew Shagayev | [e-mail](mailto:drewshg@gmail.com)
 
-[role-badge]: https://img.shields.io/badge/role-drew__kun.wifi__ap-green.svg
-[galaxy-link]: https://galaxy.ansible.com/drew_kun/wifi_ap/
+[role-badge]: https://img.shields.io/badge/role-drew--kun.wifi__ap-green.svg
+[galaxy-link]: https://galaxy.ansible.com/drew-kun/wifi_ap/
 [mit-badge]: https://img.shields.io/badge/license-MIT-blue.svg
-[mit-link]: https://raw.githubusercontent.com/drew_kun/ansible-wifi_ap/master/LICENSE
+[mit-link]: https://raw.githubusercontent.com/drew-kun/ansible-wifi_ap/master/LICENSE
 [minibian-link]: https://minibianpi.wordpress.com/
 [ansible-vault-link]: https://docs.ansible.com/ansible/latest/user_guide/vault.html
-[rpi3_network-galaxy-link]: https://galaxy.ansible.com/drew_kun/rpi3_network/
+[rpi3_network-galaxy-link]: https://galaxy.ansible.com/drew-kun/rpi3_network/
 [ansible-replace-issue-link]: https://github.com/ansible/ansible/issues/31354
