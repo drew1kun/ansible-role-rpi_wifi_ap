@@ -1,4 +1,5 @@
 galaxy_info:
+  role_name: wifi_ap
   author: Andrew Shagayev
   description: The role turns the Minibian (Debian) based raspberrypi into wireless Access Point
   company: your company (optional)
