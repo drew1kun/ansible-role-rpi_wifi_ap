@@ -12,6 +12,14 @@ Role accomplishes the following:
  - installs `iptables-persistent` and configures `iptables` to use NAT
  - installs and configures `hostapd`
 
+It is assumed that the raspberry pi 3(with built in broadcom wifi adapter) is used with additiional Ralink usb wifi dongle.
+
+The one I use it with is Ralink USB WiFi RT5370:
+ - 802.11 b/g/n 150Mbps;
+ - 2.400-2.487 GHz channels 1-14;
+ - Power: Voltage: 5V+5%, Amperage: 70mA Average)
+
+
 NOTE: The role uses ansible `replace` module wich is currently broken:
 the module's `before/after` properties work other way around.
 The [issue][ansible-replace-issue-link] is still open, but may change in the future.

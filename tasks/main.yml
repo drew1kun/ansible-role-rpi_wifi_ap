@@ -14,6 +14,9 @@
     regexp: '(^[^#\n].*{{ wifi_ap_WLAN }}.*$)'
     replace: '#\1'
     before: 'iface default.*'
+  notify:
+  - '[wifi_ap] Restart networking service'
+  - '[wifi_ap] Reload systemd daemon'
   become: yes
   tags:
   - wifi_ap
@@ -26,7 +29,10 @@
     # ATTENTION! before and after work wrong way around and this issue is still open on github.
     before: '#iface {{ wifi_ap_WLAN }} inet manual\n'
     after: 'iface default inet dhcp'
-  become: yes
+  notify:
+  - '[wifi_ap] Restart networking service'
+  - '[wifi_ap] Reload systemd daemon'
+ become: yes
   tags:
   - wifi_ap
 
@@ -39,7 +45,10 @@
       iface {{ wifi_ap_WLAN }} inet static
         address {{ wifi_ap_WLAN_ip }}
         netmask {{ wifi_ap_WLAN_netmask }}
-  become: yes
+  notify:
+  - '[wifi_ap] Restart networking service'
+  - '[wifi_ap] Reload systemd daemon'
+ become: yes
   tags:
   - wifi_ap
 

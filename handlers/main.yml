@@ -40,6 +40,19 @@
   - wifi_ap
   - wifi_ap_dependencies
 
+- name: '[wifi_ap] Restart networking service'
+  service:
+    name: networking
+    state: restarted
+  become: yes
+  when: not wifi_ap_host_reboot.changed
+
+- name: '[wifi_ap] Reload systemd daemon'
+  systemd:
+    daemon_reload: yes
+  become: yes
+  when: not wifi_ap_host_reboot.changed
+
 - name: '[wifi_ap] Restart hostapd daemon'
   service:
     name: hostapd
