@@ -5,4 +5,5 @@
 # but only affect the role execution
 wifi_ap_dhcp_restart: {failed: no}
 wifi_ap_iptables_install: {changed: no}
+wifi_ap_host_reboot: {changed: no}
 ...
