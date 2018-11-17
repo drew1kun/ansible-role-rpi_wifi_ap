@@ -5,8 +5,8 @@
   include_tasks: flush_iptables.yml
   when: wifi_ap_flush_iptables
   tags:
-    - wifi_ap
-    - wifi_ap_iptables
+  - wifi_ap
+  - wifi_ap_iptables
 
 # -i wlan1 -o wlan0
 - name: "[iptables] iptables -A FORWARD -i {{ wifi_ap_WLAN }} -o {{ wifi_ap_WAN }} -j ACCEPT"
@@ -19,8 +19,8 @@
   become: yes
   notify: '[wifi_ap] Save iptables rules with iptables-save > /etc/iptables/rules.v4'
   tags:
-    - wifi_ap
-    - wifi_ap_iptables
+  - wifi_ap
+  - wifi_ap_iptables
 
 # -i wlan0 -o wlan1
 - name: "[iptables] iptables -A FORWARD -i {{ wifi_ap_WAN }} -o {{ wifi_ap_WLAN }} -m state --state RELATED,ESTABLISHED -j ACCEPT"
@@ -35,8 +35,8 @@
   become: yes
   notify: '[wifi_ap] Save iptables rules with iptables-save > /etc/iptables/rules.v4'
   tags:
-    - wifi_ap
-    - wifi_ap_iptables
+  - wifi_ap
+  - wifi_ap_iptables
 
 # configure NAT between the built in wifi and the AP wifi interface:
 # -o wlan1
@@ -45,6 +45,6 @@
   become: yes
   notify: '[wifi_ap] Save iptables rules with iptables-save > /etc/iptables/rules.v4'
   tags:
-    - wifi_ap
-    - wifi_ap_iptables
+  - wifi_ap
+  - wifi_ap_iptables
 ...

@@ -107,7 +107,8 @@ subnet {{ wifi_ap_WLAN_subnet }} netmask {{ wifi_ap_WLAN_netmask }} {
 	option routers {{ wifi_ap_WLAN_ip }};
 	default-lease-time 600;
 	max-lease-time 7200;
-	option domain-name "local";
-	option domain-name-servers 8.8.8.8, 8.8.4.4;
+	option domain-name "{{ wifi_ap_domain }}";
+	option domain-name-servers {%for dns in wifi_ap_dns%}{{dns}}{{", " if not loop.last else ";"}}{%endfor%}
+
 }
 

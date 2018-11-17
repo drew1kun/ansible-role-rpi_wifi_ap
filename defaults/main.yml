@@ -4,14 +4,19 @@
 wifi_ap_WAN: eth0
 wifi_ap_WLAN: wlan0
 
+wifi_ap_ipv6: no
+
 wifi_ap_WLAN_subnet: 192.168.42.0
 wifi_ap_WLAN_netmask: 255.255.255.0
 wifi_ap_WLAN_broadcast: 192.168.42.255
 wifi_ap_WLAN_ip: 192.168.42.1
 wifi_ap_dhcp_range: [192.168.42.100, 192.168.42.199]
+wifi_ap_domain: domain.lan
+wifi_ap_dns: [9.9.9.9, 9.9.9.10, 149.112.122.122]
 
-wifi_ap_essid: "{{ vault_wifi_ap_essid }}"
-wifi_ap_wpa_passphrase: "{{ vault_wifi_ap_passphrase }}"
+# Please override these for security reasons!
+wifi_ap_essid: MyAP
+wifi_ap_passphrase: P@$$w0rd
 
-wifi_ap_flush_iptables: no      # no - for fresh install; yes - removes idempotency (always yellow).
+wifi_ap_flush_iptables: no  # no - for fresh install; yes - removes idempotency (always yellow).
 ...

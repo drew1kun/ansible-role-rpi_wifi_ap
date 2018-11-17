@@ -57,8 +57,10 @@ Role Variables
 | **wifi_ap_WLAN_broadcast** | Broadcast IP address for WLAN interface | `192.168.42.255` |
 | **wifi_ap_WLAN_ip** | IP address of WLAN interface  | `192.168.42.1` |
 | **wifi_ap_dhcp_range** | DHCP range of IP addresses | `[192.168.42.100, 192.168.42.199]` |
-| **wifi_ap_essid** | ESSID (name) of the wifi network | `{{ vault_wifi_ap_essid` |
-| **wifi_ap_wpa_passphrase** | WPA Passphrase for wifi network | `{{ vault_wifi_ap_wpa_passphrase }}` |
+| **wifi_ap_domain** | Search domain to be adertised to all clients by DHCP server | `domain.lan` |
+| **wifi_ap_domain** | List of DNS resolvers to be adertised to all clients by DHCP server | `[9.9.9.9, 9.9.9.10, 149.112.122.122]` |
+| **wifi_ap_essid** | ESSID (name) of the wifi network | `MyAP` |
+| **wifi_ap_passphrase** | WPA Passphrase for wifi network | `P@$$w0rd` |
 | **wifi_ap_flush_iptables** | no - for fresh install; yes - removes idempotency (always yellow) | `no` |
 
 Dependencies
@@ -66,16 +68,28 @@ Dependencies
 
  - [drew-kun.rpi3_network][rpi3_network-galaxy-link]
 
-Install it galaxy:
+Install it with galaxy:
 
     ansible-galaxy install drew-kun.rpi_expandfs drew-kun.rpi3_network
 
 Example Playbook
 ----------------
 
+As the role works with sensetive info like essid and wpa passphrase, the use of ansible-vault is recommended for use in
+playbook:
+
     - hosts: raspberrypi
       gather_facts: yes
-      roles: drew-kun.wifi_ap
+
+      vars_files:
+      - vars/vault.yml
+
+      roles:
+      - role: drew-kun.wifi_ap
+        wifi_ap_essid: "{{ vault_wifi_ap_essid }}"
+        wifi_ap_passphrase: "{{ vault_wifi_ap_passphrase }}"
+        wifi_ap_WAN: wlan0
+        wifi_ap_WLAN: wlan1
 
 License
 -------

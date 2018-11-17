@@ -1,19 +1,44 @@
 ---
 # handlers file for ansible-wifi_ap
 
-# Networking service does not need restart as host reboots for iptables kernel modules reload.
-# But systemd daemon still must be reloaded as reboot does not reload it automatically.
-- name: '[wifi_ap] Systemd daemon-reload'
-  systemd:
-    daemon_reload: yes
-  become: yes
-
 - name: '[wifi_ap] Restart dhcp daemon'
   service:
     name: isc-dhcp-server
     state: restarted
     enabled: yes
+  register: wifi_ap_dhcp_restart
+  ignore_errors: yes
   become: yes
+
+# haven't find a solution without reboot
+# Although the reboot happens we still need all handlers to be run
+- name: '[wifi_ap] Reboot the managed host to reload iptables kernel modules and isc-dhcp-server'
+  shell: 'sleep 1 && shutdown -r now "Reboot triggered by Ansible" && sleep 1'
+  async: 1
+  poll: 0
+  become: yes
+  register: wifi_ap_host_reboot
+  listen: '[wifi_ap] Reboot the host'
+  when: wifi_ap_dhcp_restart.failed
+        or wifi_ap_iptables_install.changed
+  tags:
+  - wifi_ap
+  - wifi_ap_dependencies
+
+# ansible_ssh_host variable is set in ansible inventory (hosts) file
+- name: '[wifi_ap] Waiting for managed host to come back after reboot'
+  local_action:
+    module: wait_for
+      host="{{ ansible_ssh_host }}"
+      port=22
+      delay=1
+  become: no
+  listen: '[wifi_ap] Reboot the host'
+  when: wifi_ap_dhcp_restart.failed
+        or wifi_ap_iptables_install.changed
+  tags:
+  - wifi_ap
+  - wifi_ap_dependencies
 
 - name: '[wifi_ap] Restart hostapd daemon'
   service:
@@ -21,8 +46,20 @@
     state: restarted
     enabled: yes
   become: yes
+  when: not wifi_ap_host_reboot.changed
 
 - name: '[wifi_ap] Save iptables rules with iptables-save > /etc/iptables/rules.v4'
-  shell: sh -c "iptables-save > /etc/iptables/rules.v4"
+  shell: sh -c 'iptables-save > /etc/iptables/rules.v4'
   become: yes
+
+- name: '[wifi_ap] Notify if the isc-dhcp-server restart failed'
+  debug:
+    msg:
+    - "ATTENTION!"
+    - "the 'systemctl restart isc-dhcp-server' command failed"
+    - "the server may still function properly after the host reboot"
+    - "Please run 'systemctl status isc-dhcp-server' to make sure if the dhcp server works"
+  when: wifi_ap_dhcp_restart.failed
+  tags:
+  - wifi_ap
 ...

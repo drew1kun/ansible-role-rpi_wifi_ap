@@ -1,17 +1,17 @@
 ---
-- name: "[iptables] iptables -t filter -F"
+- name: '[iptables] iptables -t filter -F'
   iptables: flush=yes
   become: yes
   tags:
-    - wifi_ap
-    - wifi_ap_iptables
-    - wifi_ap_flush_iptables
+  - wifi_ap
+  - wifi_ap_iptables
+  - wifi_ap_flush_iptables
 
-- name: "[iptables] iptables -t nat -F"
+- name: '[iptables] iptables -t nat -F'
   iptables: table=nat flush=yes
   become: yes
   tags:
-    - wifi_ap
-    - wifi_ap_iptables
-    - wifi_ap_flush_iptables
+  - wifi_ap
+  - wifi_ap_iptables
+  - wifi_ap_flush_iptables
 ...

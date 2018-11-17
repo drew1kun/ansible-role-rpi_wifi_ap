@@ -1,6 +1,12 @@
 ---
 # tasks file for ansible-wifi_ap
 
+# dependencies
+- name: "[main] Include dependencies installation tasks"
+  include_tasks: dependencies.yml
+  tags:
+  - wifi_ap
+
 # Network
 - name: "[main] /etc/network/interfaces: Find and comment all lines containing {{ wifi_ap_WLAN }}"
   replace:
@@ -9,9 +15,8 @@
     replace: '#\1'
     before: 'iface default.*'
   become: yes
-  notify: '[wifi_ap] Systemd daemon-reload'
   tags:
-    - wifi_ap
+  - wifi_ap
 
 - name: "[main] /etc/network/interfaces: Find and comment all {{ wifi_ap_WLAN }}-related settings"
   replace:
@@ -22,9 +27,8 @@
     before: '#iface {{ wifi_ap_WLAN }} inet manual\n'
     after: 'iface default inet dhcp'
   become: yes
-  notify: '[wifi_ap] Systemd daemon-reload'
   tags:
-    - wifi_ap
+  - wifi_ap
 
 - name: "[main] Configure {{ wifi_ap_WLAN }} (ip: {{ wifi_ap_WLAN_ip }}; netmask: {{ wifi_ap_WLAN_netmask }}) in /etc/network/interfaces"
   blockinfile:
@@ -36,9 +40,8 @@
         address {{ wifi_ap_WLAN_ip }}
         netmask {{ wifi_ap_WLAN_netmask }}
   become: yes
-  notify: '[wifi_ap] Systemd daemon-reload'
   tags:
-    - wifi_ap
+  - wifi_ap
 
 - name: "[main] Turn on ip forwarding on in /proc and in the sysctl file and reload if necessary"
   sysctl:
@@ -49,14 +52,7 @@
     reload: yes
   become: yes
   tags:
-    - wifi_ap
-
-# Dependencies (tasks/dependencies.yml)
-# Contain Reboot instructions for iptables kernel modules reload
-- name: "[main] Include dependencies installation tasks"
-  include_tasks: dependencies.yml
-  tags:
-    - wifi_ap
+  - wifi_ap
 
 # DHCP
 - name: "[main] Generate /etc/dhcp/dhcpd.conf"
@@ -68,21 +64,39 @@
     mode: 0644
     backup: yes
   become: yes
-  notify: '[wifi_ap] Restart dhcp daemon'
+  notify:
+  - '[wifi_ap] Restart dhcp daemon'
+  - '[wifi_ap] Reboot the host'
+  - '[wifi_ap] Notify if the isc-dhcp-server restart failed'
   tags:
-    - wifi_ap
+  - wifi_ap
 
-- name: "[main] Specify 'INTERFACES={{ wifi_ap_WLAN }}' in /etc/default/isc-dhcp-server"
-  lineinfile:
+- name: "[main] Specify 'INTERFACESv4|6={{ wifi_ap_WLAN }}' in /etc/default/isc-dhcp-server"
+  replace:
     path: /etc/default/isc-dhcp-server
-    regexp: '(INTERFACESv[46]=)".*"'
-    line: '\1"{{ wifi_ap_WLAN }}"'
-    backrefs: yes
-    state: present
+    regexp: '^(INTERFACESv[46]=)".*"'
+    replace: '\1"{{ wifi_ap_WLAN }}"'
   become: yes
-  notify: '[wifi_ap] Restart dhcp daemon'
+  notify:
+  - '[wifi_ap] Restart dhcp daemon'
+  - '[wifi_ap] Reboot the host'
+  - '[wifi_ap] Notify if the isc-dhcp-server restart failed'
   tags:
-    - wifi_ap
+  - wifi_ap
+
+- name: "[main] Disable 'INTERFACESv6' in /etc/default/isc-dhcp-server if IPv6 is not configured"
+  replace:
+    path: /etc/default/isc-dhcp-server
+    regexp: '^(INTERFACESv6=".*")'
+    replace: '#\1'
+  become: yes
+  notify:
+  - '[wifi_ap] Restart dhcp daemon'
+  - '[wifi_ap] Reboot the host'
+  - '[wifi_ap] Notify if the isc-dhcp-server restart failed'
+  when: not wifi_ap_ipv6
+  tags:
+  - wifi_ap
 
 # HostAPd
 - name: "[main] Generate /etc/hostapd/hostapd.conf"
@@ -95,7 +109,7 @@
   become: yes
   notify: '[wifi_ap] Restart hostapd daemon'
   tags:
-    - wifi_ap
+  - wifi_ap
 
 - name: "[main] Add 'DAEMON_CONF=/etc/hostapd/hostapd.conf' to /etc/default/hostapd"
   lineinfile:
@@ -106,24 +120,23 @@
   become: yes
   notify: '[wifi_ap] Restart hostapd daemon'
   tags:
-    - wifi_ap
+  - wifi_ap
+
+- meta: flush_handlers
+  tags:
+  - wifi_ap
 
 # IPTables (tasks/iptables.yml)
 - name: "[main] Include tasks from iptables.yml"
   include_tasks: iptables.yml
   tags:
-    - wifi_ap
-
-- name: "[main] Flush all handlers before reboot"
-  meta: flush_handlers
-  tags:
-    - wifi_ap
+  - wifi_ap
 
 - name: "[main] Access Point ESSID"
   debug:
     msg:
-      - "Configuration is done"
-      - "the Access Point name: {{ wifi_ap_essid }}"
+    - "Configuration is done"
+    - "the Access Point name: {{ wifi_ap_essid }}"
   tags:
-    - wifi_ap
+  - wifi_ap
 ...
