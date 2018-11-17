@@ -48,7 +48,7 @@
   notify:
   - '[wifi_ap] Restart networking service'
   - '[wifi_ap] Reload systemd daemon'
- become: yes
+  become: yes
   tags:
   - wifi_ap
 
