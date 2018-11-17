@@ -15,8 +15,10 @@
     replace: '#\1'
     before: 'iface default.*'
   notify:
-  - '[wifi_ap] Restart networking service'
   - '[wifi_ap] Reload systemd daemon'
+  - '[wifi_ap] Restart networking service'
+  - '[wifi_ap] Reboot the host'
+  - '[wifi_ap] Notify if the networking or isc-dhcp-server service restart failed'
   become: yes
   tags:
   - wifi_ap
@@ -30,8 +32,10 @@
     before: '#iface {{ wifi_ap_WLAN }} inet manual\n'
     after: 'iface default inet dhcp'
   notify:
-  - '[wifi_ap] Restart networking service'
   - '[wifi_ap] Reload systemd daemon'
+  - '[wifi_ap] Restart networking service'
+  - '[wifi_ap] Reboot the host'
+  - '[wifi_ap] Notify if the networking or isc-dhcp-server service restart failed'
   become: yes
   tags:
   - wifi_ap
@@ -46,8 +50,10 @@
         address {{ wifi_ap_WLAN_ip }}
         netmask {{ wifi_ap_WLAN_netmask }}
   notify:
-  - '[wifi_ap] Restart networking service'
   - '[wifi_ap] Reload systemd daemon'
+  - '[wifi_ap] Restart networking service'
+  - '[wifi_ap] Reboot the host'
+  - '[wifi_ap] Notify if the networking or isc-dhcp-server service restart failed'
   become: yes
   tags:
   - wifi_ap
@@ -76,7 +82,7 @@
   notify:
   - '[wifi_ap] Restart dhcp daemon'
   - '[wifi_ap] Reboot the host'
-  - '[wifi_ap] Notify if the isc-dhcp-server restart failed'
+  - '[wifi_ap] Notify if the networking or isc-dhcp-server service restart failed'
   tags:
   - wifi_ap
 
@@ -89,7 +95,7 @@
   notify:
   - '[wifi_ap] Restart dhcp daemon'
   - '[wifi_ap] Reboot the host'
-  - '[wifi_ap] Notify if the isc-dhcp-server restart failed'
+  - '[wifi_ap] Notify if the networking or isc-dhcp-server service restart failed'
   tags:
   - wifi_ap
 
@@ -102,7 +108,7 @@
   notify:
   - '[wifi_ap] Restart dhcp daemon'
   - '[wifi_ap] Reboot the host'
-  - '[wifi_ap] Notify if the isc-dhcp-server restart failed'
+  - '[wifi_ap] Notify if the networking or isc-dhcp-server service restart failed'
   when: not wifi_ap_ipv6
   tags:
   - wifi_ap

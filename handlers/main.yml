@@ -10,6 +10,19 @@
   ignore_errors: yes
   become: yes
 
+- name: '[wifi_ap] Reload systemd daemon'
+  systemd:
+    daemon_reload: yes
+  become: yes
+
+- name: '[wifi_ap] Restart networking service'
+  service:
+    name: networking
+    state: restarted
+  register: wifi_ap_net_restart
+  ignore_errors: yes
+  become: yes
+
 # haven't find a solution without reboot
 # Although the reboot happens we still need all handlers to be run
 - name: '[wifi_ap] Reboot the managed host to reload iptables kernel modules and isc-dhcp-server'
@@ -20,6 +33,7 @@
   register: wifi_ap_host_reboot
   listen: '[wifi_ap] Reboot the host'
   when: wifi_ap_dhcp_restart.failed
+        or wifi_ap_net_restart.failed
         or wifi_ap_iptables_install.changed
   tags:
   - wifi_ap
@@ -35,23 +49,11 @@
   become: no
   listen: '[wifi_ap] Reboot the host'
   when: wifi_ap_dhcp_restart.failed
+        or wifi_ap_net_restart.failed
         or wifi_ap_iptables_install.changed
   tags:
   - wifi_ap
   - wifi_ap_dependencies
-
-- name: '[wifi_ap] Reload systemd daemon'
-  systemd:
-    daemon_reload: yes
-  become: yes
-  when: not wifi_ap_host_reboot.changed
-
-- name: '[wifi_ap] Restart networking service'
-  service:
-    name: networking
-    state: restarted
-  become: yes
-  when: not wifi_ap_host_reboot.changed
 
 - name: '[wifi_ap] Restart hostapd daemon'
   service:
@@ -65,14 +67,17 @@
   shell: sh -c 'iptables-save > /etc/iptables/rules.v4'
   become: yes
 
-- name: '[wifi_ap] Notify if the isc-dhcp-server restart failed'
+- name: '[wifi_ap] Notify if the networking or isc-dhcp-server service restart failed'
   debug:
     msg:
     - "ATTENTION!"
-    - "the 'systemctl restart isc-dhcp-server' command failed"
-    - "the server may still function properly after the host reboot"
-    - "Please run 'systemctl status isc-dhcp-server' to make sure if the dhcp server works"
+    - "Some of the following commands failed:"
+    - "   'systemctl restart networking'"
+    - "   'systemctl restart isc-dhcp-server'"
+    - "the services may still function properly after the host reboot"
+    - "Please run 'systemctl status' to make sure if mentioned services work"
   when: wifi_ap_dhcp_restart.failed
+        or wifi_ap_net_restart.failed
   tags:
   - wifi_ap
 ...
