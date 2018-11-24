@@ -86,18 +86,20 @@ Example Playbook
 As the role works with sensetive info like essid and wpa passphrase, the use of ansible-vault is recommended for use in
 playbook:
 
-    - hosts: raspberrypi
-      gather_facts: yes
+```yaml
+- hosts: raspberrypi
+  gather_facts: yes
 
-      vars_files:
-      - vars/vault.yml
+  vars_files:
+  - vars/vault.yml
 
-      roles:
-      - role: drew-kun.wifi_ap
-        wifi_ap_essid: "{{ vault_wifi_ap_essid }}"
-        wifi_ap_passphrase: "{{ vault_wifi_ap_passphrase }}"
-        wifi_ap_WAN: wlan0
-        wifi_ap_WLAN: wlan1
+  roles:
+  - role: drew-kun.wifi_ap
+    wifi_ap_essid: "{{ vault_wifi_ap_essid }}"
+    wifi_ap_passphrase: "{{ vault_wifi_ap_passphrase }}"
+    wifi_ap_WAN: wlan0
+    wifi_ap_WLAN: wlan1
+```
 
 License
 -------
