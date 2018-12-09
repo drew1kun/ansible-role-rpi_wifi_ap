@@ -87,7 +87,7 @@ Install it with galaxy:
 Example Playbook
 ----------------
 
-As the role works with sensetive info like essid and wpa passphrase, the use of [ansible-vault][ansible-vault-link] is recommended for use in
+As the role works with sensitive info like essid and wpa passphrase, the use of [ansible-vault][ansible-vault-link] is recommended for use in
 playbook:
 
 ```yaml
@@ -116,11 +116,10 @@ playbook:
 
 ```yaml
 vault_wifi_ap__rpi3_network_wifi_APs:
-# only sensetive stuff goes here:
-- essid: YourSensetiveESSID
+# only sensitive stuff goes here:
+- essid: YourSensitiveESSID
   passphrase: YourSecureWPA_Passphrase
 ```
-
 
 License
 -------
