@@ -24,5 +24,6 @@ galaxy_info:
   - access_point
 
 dependencies:
-- drew-kun.rpi3_network
+- role: drew-kun.rpi3_network
+  rpi3_network_wifi_APs: "{{ wifi_ap__rpi3_network_wifi_APs }}"
 ...

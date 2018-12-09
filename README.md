@@ -36,10 +36,12 @@ One of the following distros (or derivatives) required:
 
 **ATTENTION!**
 
-**vault_wifi_ap_essid** and **vault_wifi_ap_wpa_passphrase** vars are set in *vars/main.yml*,
-which is encrypted with [ansible-vault][ansible-vault-link].
+make sure you override the **wifi_ap__rpi3_network_wifi_APs** var as it contains a sensetive data for your wireless networks,
+such as WPA passphrase and network ESSID...
 
-Before running the role decrypt the file *vars/main.yml* with:
+It is highly recommended to encrypt with [ansible-vault][ansible-vault-link].
+
+Before running any playbook which uses this role, decrypt the file *vars/main.yml* with:
 
     ansible-vault decrypt vars/main.yml --vault-password-file=.vault.key
 
@@ -70,6 +72,7 @@ Role Variables
 | **wifi_ap_essid** | ESSID (name) of the wifi network | `MyAP` |
 | **wifi_ap_passphrase** | WPA Passphrase for wifi network | `P@$$w0rd` |
 | **wifi_ap_flush_iptables** | no - for fresh install; yes - removes idempotency (always yellow) | `no` |
+| **wifi_ap__rpi3_network_wifi_APs** | this overrides the rpi3_network_wifi_APs var of rpi3_network dependency role | see [`defaults/main.yml`](defaults/main.yml) |
 
 Dependencies
 ------------
@@ -83,7 +86,7 @@ Install it with galaxy:
 Example Playbook
 ----------------
 
-As the role works with sensetive info like essid and wpa passphrase, the use of ansible-vault is recommended for use in
+As the role works with sensetive info like essid and wpa passphrase, the use of [ansible-vault][ansible-vault-link] is recommended for use in
 playbook:
 
 ```yaml
@@ -99,7 +102,24 @@ playbook:
     wifi_ap_passphrase: "{{ vault_wifi_ap_passphrase }}"
     wifi_ap_WAN: wlan0
     wifi_ap_WLAN: wlan1
+
+    wif_ap__rpi3_network_wifi_APs:
+    - id_str: home
+      hidden: no
+      essid: "{{ vault_wifi_ap__rpi3_network_wifi_APs[0].essid }}"
+      passphrase: "{{ vault_wifi_ap__rpi3_network_wifi_APs[0].passphrase }}"
+      priority: 10
+
 ```
+*vars/vault.yml*:
+
+```yaml
+vault_wifi_ap__rpi3_network_wifi_APs:
+# only sensetive stuff goes here:
+- essid: YourSensetiveESSID
+  passphrase: YourSecureWPA_Passphrase
+```
+
 
 License
 -------
