@@ -36,7 +36,7 @@ One of the following distros (or derivatives) required:
 
 **ATTENTION!**
 
-make sure you override the **wifi_ap__rpi3_network_wifi_APs** var as it contains a sensetive data for your wireless networks,
+make sure you override the **wifi_ap__rpi3_network_wifi_APs** var as it contains a sensitive data for your wireless networks,
 such as WPA passphrase and network ESSID...
 
 It is highly recommended to encrypt with [ansible-vault][ansible-vault-link].
