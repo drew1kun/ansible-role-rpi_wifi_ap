@@ -34,6 +34,26 @@ One of the following distros (or derivatives) required:
     - jessie
     - stretch
 
+Role Variables
+--------------
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| **wifi_ap_WAN** | WAN (external) interface  | `eth0` |
+| **wifi_ap_WLAN** | WLAN (internal) wireless interface  | `wlan0` |
+| **wifi_ap_WLAN_subnet** | Network IP address for WLAN interface  | `192.168.42.0` |
+| **wifi_ap_WLAN_netmask** | Subnet mask for WLAN interface | `255.255.255.0` |
+| **wifi_ap_WLAN_broadcast** | Broadcast IP address for WLAN interface | `192.168.42.255` |
+| **wifi_ap_WLAN_ip** | IP address of WLAN interface  | `192.168.42.1` |
+| **wifi_ap_dhcp_range** | DHCP range of IP addresses | `[192.168.42.100, 192.168.42.199]` |
+| **wifi_ap_domain** | Search domain to be adertised to all clients by DHCP server | `domain.lan` |
+| **wifi_ap_domain** | List of DNS resolvers to be adertised to all clients by DHCP server | `[9.9.9.9, 9.9.9.10, 149.112.122.122]` |
+| **wifi_ap_essid** | ESSID (name) of the wifi network | `MyAP` |
+| **wifi_ap_passphrase** | WPA Passphrase for wifi network | `P@$$w0rd` |
+| **wifi_ap_flush_iptables** | no - for fresh install; yes - removes idempotency (always yellow) | `no` |
+| **wifi_ap__rpi3_network_wifi_APs** | this overrides the rpi3_network_wifi_APs var of rpi3_network dependency role | see [`defaults/main.yml`](defaults/main.yml) |
+
+
 **ATTENTION!**
 
 make sure you override the **wifi_ap__rpi3_network_wifi_APs** var as it contains a sensitive data for your wireless networks,
@@ -54,25 +74,6 @@ add the following to **ansible.cfg**:
 
     [defaults]
     vault_password_file = .vault.key
-
-Role Variables
---------------
-
-| Variable | Description | Default |
-|----------|-------------|---------|
-| **wifi_ap_WAN** | WAN (external) interface  | `eth0` |
-| **wifi_ap_WLAN** | WLAN (internal) wireless interface  | `wlan0` |
-| **wifi_ap_WLAN_subnet** | Network IP address for WLAN interface  | `192.168.42.0` |
-| **wifi_ap_WLAN_netmask** | Subnet mask for WLAN interface | `255.255.255.0` |
-| **wifi_ap_WLAN_broadcast** | Broadcast IP address for WLAN interface | `192.168.42.255` |
-| **wifi_ap_WLAN_ip** | IP address of WLAN interface  | `192.168.42.1` |
-| **wifi_ap_dhcp_range** | DHCP range of IP addresses | `[192.168.42.100, 192.168.42.199]` |
-| **wifi_ap_domain** | Search domain to be adertised to all clients by DHCP server | `domain.lan` |
-| **wifi_ap_domain** | List of DNS resolvers to be adertised to all clients by DHCP server | `[9.9.9.9, 9.9.9.10, 149.112.122.122]` |
-| **wifi_ap_essid** | ESSID (name) of the wifi network | `MyAP` |
-| **wifi_ap_passphrase** | WPA Passphrase for wifi network | `P@$$w0rd` |
-| **wifi_ap_flush_iptables** | no - for fresh install; yes - removes idempotency (always yellow) | `no` |
-| **wifi_ap__rpi3_network_wifi_APs** | this overrides the rpi3_network_wifi_APs var of rpi3_network dependency role | see [`defaults/main.yml`](defaults/main.yml) |
 
 Dependencies
 ------------
