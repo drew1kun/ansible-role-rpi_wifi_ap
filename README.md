@@ -51,7 +51,7 @@ Role Variables
 | **wifi_ap_essid** | ESSID (name) of the wifi network | `MyAP` |
 | **wifi_ap_passphrase** | WPA Passphrase for wifi network | `P@$$w0rd` |
 | **wifi_ap_flush_iptables** | no - for fresh install; yes - removes idempotency (always yellow) | `no` |
-| **wifi_ap__rpi3_network_wifi_APs** | this overrides the rpi3_network_wifi_APs var of rpi3_network dependency role | see [`defaults/main.yml`](defaults/main.yml) |
+| **wifi_ap__rpi3_network_wifi_APs** | this overrides the rpi3_network_wifi_APs var of rpi3_network dependency role | see [`defaults/main.yml`](defaults/main.yml#L27) |
 
 
 **ATTENTION!**
