@@ -22,8 +22,8 @@
   - wifi_ap
   - wifi_ap_iptables
 
-# -i wlan0 -o wlan1
-- name: "[iptables] iptables -A FORWARD -i {{ wifi_ap_WAN }} -o {{ wifi_ap_WLAN }} -m state --state RELATED,ESTABLISHED -j ACCEPT"
+# iptables -A FORWARD -i wlan0 -o wlan1 -m state --state RELATED,ESTABLISHED -j ACCEPT"
+- name: "[iptables] iptables -A FORWARD -i {{ wifi_ap_WAN }} -o {{ wifi_ap_WLAN }} -m state --state REL,ESTAB -j ACCEPT"
   iptables:
     action: append
     chain: FORWARD
