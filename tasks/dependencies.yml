@@ -6,6 +6,9 @@
   until: wifi_ap_upd_result is succeeded
   become: yes
   when: ansible_os_family == 'Debian'
+  tags:
+  - wifi_ap
+  - wifi_ap_dependencies
 
 - name: '[dependencies] Install packages including Ralink firmware, usbutils, isc-dhcp-server, hostapd'
   package:

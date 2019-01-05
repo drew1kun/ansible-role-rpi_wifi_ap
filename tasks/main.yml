@@ -4,8 +4,7 @@
 # dependencies
 - name: "[main] Include dependencies installation tasks"
   include_tasks: dependencies.yml
-  tags:
-  - wifi_ap
+  tags: wifi_ap
 
 # Network
 - name: "[main] /etc/network/interfaces: Find and comment all lines containing {{ wifi_ap_WLAN }}"
@@ -20,8 +19,7 @@
   - '[wifi_ap] Reboot the host'
   - '[wifi_ap] Notify if the networking or isc-dhcp-server service restart failed'
   become: yes
-  tags:
-  - wifi_ap
+  tags: wifi_ap
 
 - name: "[main] /etc/network/interfaces: Find and comment all {{ wifi_ap_WLAN }}-related settings"
   replace:
@@ -37,10 +35,10 @@
   - '[wifi_ap] Reboot the host'
   - '[wifi_ap] Notify if the networking or isc-dhcp-server service restart failed'
   become: yes
-  tags:
-  - wifi_ap
+  tags: wifi_ap
 
-- name: "[main] Configure {{ wifi_ap_WLAN }} (ip: {{ wifi_ap_WLAN_ip }}; netmask: {{ wifi_ap_WLAN_netmask }}) in /etc/network/interfaces"
+- name: "[main] Configure {{ wifi_ap_WLAN }} (ip: {{ wifi_ap_WLAN_ip }}; netmask: {{ wifi_ap_WLAN_netmask }})
+        in /etc/network/interfaces"
   blockinfile:
     marker: '#{mark} Added by drew-kun.wifi_ap asnible role'
     path: /etc/network/interfaces
@@ -55,8 +53,7 @@
   - '[wifi_ap] Reboot the host'
   - '[wifi_ap] Notify if the networking or isc-dhcp-server service restart failed'
   become: yes
-  tags:
-  - wifi_ap
+  tags: wifi_ap
 
 - name: "[main] Turn on ip forwarding on in /proc and in the sysctl file and reload if necessary"
   sysctl:
@@ -66,8 +63,7 @@
     state: present
     reload: yes
   become: yes
-  tags:
-  - wifi_ap
+  tags: wifi_ap
 
 # DHCP
 - name: "[main] Generate /etc/dhcp/dhcpd.conf"
@@ -83,8 +79,7 @@
   - '[wifi_ap] Restart dhcp daemon'
   - '[wifi_ap] Reboot the host'
   - '[wifi_ap] Notify if the networking or isc-dhcp-server service restart failed'
-  tags:
-  - wifi_ap
+  tags: wifi_ap
 
 - name: "[main] Specify 'INTERFACESv4|6={{ wifi_ap_WLAN }}' in /etc/default/isc-dhcp-server"
   replace:
@@ -96,8 +91,7 @@
   - '[wifi_ap] Restart dhcp daemon'
   - '[wifi_ap] Reboot the host'
   - '[wifi_ap] Notify if the networking or isc-dhcp-server service restart failed'
-  tags:
-  - wifi_ap
+  tags: wifi_ap
 
 - name: "[main] Disable 'INTERFACESv6' in /etc/default/isc-dhcp-server if IPv6 is not configured"
   replace:
@@ -110,8 +104,7 @@
   - '[wifi_ap] Reboot the host'
   - '[wifi_ap] Notify if the networking or isc-dhcp-server service restart failed'
   when: not wifi_ap_ipv6
-  tags:
-  - wifi_ap
+  tags: wifi_ap
 
 # HostAPd
 - name: "[main] Generate /etc/hostapd/hostapd.conf"
@@ -123,8 +116,7 @@
     mode: 0644
   become: yes
   notify: '[wifi_ap] Restart hostapd daemon'
-  tags:
-  - wifi_ap
+  tags: wifi_ap
 
 - name: "[main] Add 'DAEMON_CONF=/etc/hostapd/hostapd.conf' to /etc/default/hostapd"
   lineinfile:
@@ -134,24 +126,20 @@
     state: present
   become: yes
   notify: '[wifi_ap] Restart hostapd daemon'
-  tags:
-  - wifi_ap
+  tags: wifi_ap
 
 - meta: flush_handlers
-  tags:
-  - wifi_ap
+  tags: wifi_ap
 
 # IPTables (tasks/iptables.yml)
 - name: "[main] Include tasks from iptables.yml"
   include_tasks: iptables.yml
-  tags:
-  - wifi_ap
+  tags: wifi_ap
 
 - name: "[main] Access Point ESSID"
   debug:
     msg:
     - "Configuration is done"
     - "the Access Point name: {{ wifi_ap_essid }}"
-  tags:
-  - wifi_ap
+  tags: wifi_ap
 ...
