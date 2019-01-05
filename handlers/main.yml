@@ -35,25 +35,19 @@
   when: wifi_ap_dhcp_restart.failed
         or wifi_ap_net_restart.failed
         or wifi_ap_iptables_install.changed
-  tags:
-  - wifi_ap
-  - wifi_ap_dependencies
 
 # ansible_ssh_host variable is set in ansible inventory (hosts) file
 - name: '[wifi_ap] Waiting for managed host to come back after reboot'
-  local_action:
-    module: wait_for
-      host="{{ ansible_ssh_host }}"
-      port=22
-      delay=1
+  wait_for:
+    host: "{{ ansible_ssh_host }}"
+    port: 22
+    delay: 1
+  delegate_to: localhost
   become: no
   listen: '[wifi_ap] Reboot the host'
   when: wifi_ap_dhcp_restart.failed
         or wifi_ap_net_restart.failed
         or wifi_ap_iptables_install.changed
-  tags:
-  - wifi_ap
-  - wifi_ap_dependencies
 
 - name: '[wifi_ap] Restart hostapd daemon'
   service:
@@ -78,6 +72,4 @@
     - "Please run 'systemctl status' to make sure if mentioned services work"
   when: wifi_ap_dhcp_restart.failed
         or wifi_ap_net_restart.failed
-  tags:
-  - wifi_ap
 ...

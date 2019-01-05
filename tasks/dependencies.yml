@@ -2,6 +2,8 @@
 - name: '[dependencies] Update packages on Debian'
   apt:
     update_cache: yes
+  register: wifi_ap_upd_result
+  until: wifi_ap_upd_result is succeeded
   become: yes
   when: ansible_os_family == 'Debian'
 
@@ -13,8 +15,10 @@
     #- firmware-ralink
     - isc-dhcp-server
     - hostapd
-    state: latest
+    state: present
   become: yes
+  register: wifi_ap_dep_result
+  until: wifi_ap_dep_result is succeeded
   tags:
   - wifi_ap
   - wifi_ap_dependencies
@@ -23,6 +27,7 @@
   package: name=iptables-persistent state=present
   register: wifi_ap_iptables_install
   notify: '[wifi_ap] Reboot the host'
+  until: wifi_ap_iptables_install is succeeded
   become: yes
   tags:
   - wifi_ap
