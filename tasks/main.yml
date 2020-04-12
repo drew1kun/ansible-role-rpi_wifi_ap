@@ -2,8 +2,8 @@
 # tasks file for ansible-wifi_ap
 
 # dependencies
-- name: "[main] Include dependencies installation tasks"
-  include_tasks: dependencies.yml
+- name: "[main] Import dependencies installation tasks"
+  import_tasks: dependencies.yml
   tags: wifi_ap
 
 # Network
@@ -132,8 +132,8 @@
   tags: wifi_ap
 
 # IPTables (tasks/iptables.yml)
-- name: "[main] Include tasks from iptables.yml"
-  include_tasks: iptables.yml
+- name: "[main] Import tasks from iptables.yml"
+  import_tasks: iptables.yml
   tags: wifi_ap
 
 - name: "[main] Access Point ESSID"
