@@ -5,7 +5,7 @@
   register: wifi_ap_upd_result
   until: wifi_ap_upd_result is succeeded
   become: yes
-  when: ansible_os_family == 'Debian'
+  when: "'Debian' in ansible_os_family"
   tags:
   - wifi_ap
   - wifi_ap_dependencies
