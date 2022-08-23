@@ -78,11 +78,11 @@ add the following to **ansible.cfg**:
 Dependencies
 ------------
 
- - [drew-kun.rpi3_network][rpi3_network-galaxy-link]
+ - [drew1kun.rpi3_network][rpi3_network-galaxy-link]
 
 Install it with galaxy:
 
-    ansible-galaxy install drew-kun.rpi_expandfs drew-kun.rpi3_network
+    ansible-galaxy install drew1kun.rpi_expandfs drew1kun.rpi3_network
 
 Example Playbook
 ----------------
@@ -98,7 +98,7 @@ playbook:
   - vars/vault.yml
 
   roles:
-  - role: drew-kun.wifi_ap
+  - role: drew1kun.wifi_ap
     wifi_ap_essid: "{{ vault_wifi_ap_essid }}"
     wifi_ap_passphrase: "{{ vault_wifi_ap_passphrase }}"
     wifi_ap_WAN: wlan0
@@ -132,10 +132,10 @@ Author Information
 Andrew Shagayev | [e-mail](mailto:drewshg@gmail.com)
 
 [role-badge]: https://img.shields.io/badge/role-drew--kun.wifi__ap-green.svg
-[galaxy-link]: https://galaxy.ansible.com/drew-kun/wifi_ap/
+[galaxy-link]: https://galaxy.ansible.com/drew1kun/wifi_ap/
 [mit-badge]: https://img.shields.io/badge/license-MIT-blue.svg
-[mit-link]: https://raw.githubusercontent.com/drew-kun/ansible-wifi_ap/master/LICENSE
+[mit-link]: https://raw.githubusercontent.com/drew1kun/ansible-wifi_ap/master/LICENSE
 [minibian-link]: https://minibianpi.wordpress.com/
 [ansible-vault-link]: https://docs.ansible.com/ansible/latest/user_guide/vault.html
-[rpi3_network-galaxy-link]: https://galaxy.ansible.com/drew-kun/rpi3_network/
+[rpi3_network-galaxy-link]: https://galaxy.ansible.com/drew1kun/rpi3_network/
 [ansible-replace-issue-link]: https://github.com/ansible/ansible/issues/31354

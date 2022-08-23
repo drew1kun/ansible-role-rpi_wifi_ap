@@ -26,24 +26,8 @@
 # haven't find a solution without reboot
 # Although the reboot happens we still need all handlers to be run
 - name: '[wifi_ap] Reboot the managed host to reload iptables kernel modules and isc-dhcp-server'
-  shell: 'sleep 1 && shutdown -r now "Reboot triggered by Ansible" && sleep 1'
-  async: 1
-  poll: 0
+  reboot:
   become: yes
-  register: wifi_ap_host_reboot
-  listen: '[wifi_ap] Reboot the host'
-  when: wifi_ap_dhcp_restart.failed
-        or wifi_ap_net_restart.failed
-        or wifi_ap_iptables_install.changed
-
-# ansible_ssh_host variable is set in ansible inventory (hosts) file
-- name: '[wifi_ap] Waiting for managed host to come back after reboot'
-  wait_for:
-    host: "{{ ansible_ssh_host }}"
-    port: 22
-    delay: 1
-  delegate_to: localhost
-  become: no
   listen: '[wifi_ap] Reboot the host'
   when: wifi_ap_dhcp_restart.failed
         or wifi_ap_net_restart.failed
@@ -72,4 +56,3 @@
     - "Please run 'systemctl status' to make sure if mentioned services work"
   when: wifi_ap_dhcp_restart.failed
         or wifi_ap_net_restart.failed
-...

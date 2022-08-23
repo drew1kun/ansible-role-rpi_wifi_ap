@@ -5,7 +5,7 @@ galaxy_info:
 
   license: MIT
 
-  min_ansible_version: 2.4
+  min_ansible_version: 2.7
 
   github_branch: master
 
@@ -23,6 +23,5 @@ galaxy_info:
   - accesspoint
 
 dependencies:
-- role: drew-kun.rpi3_network
+- role: drew1kun.rpi3_network
   rpi3_network_wifi_APs: "{{ wifi_ap__rpi3_network_wifi_APs }}"
-...

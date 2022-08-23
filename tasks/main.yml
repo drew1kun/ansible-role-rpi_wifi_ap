@@ -40,7 +40,7 @@
 - name: "[main] Configure {{ wifi_ap_WLAN }} (ip: {{ wifi_ap_WLAN_ip }}; netmask: {{ wifi_ap_WLAN_netmask }})
         in /etc/network/interfaces"
   blockinfile:
-    marker: '#{mark} Added by drew-kun.wifi_ap asnible role'
+    marker: '#{mark} Added by drew1kun.wifi_ap asnible role'
     path: /etc/network/interfaces
     block: |
       auto {{ wifi_ap_WLAN }}
@@ -142,4 +142,3 @@
     - "Configuration is done"
     - "the Access Point name: {{ wifi_ap_essid }}"
   tags: wifi_ap
-...
