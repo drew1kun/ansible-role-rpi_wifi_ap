@@ -1,51 +1,51 @@
 ---
-# handlers file for ansible-wifi_ap
+# handlers file for ansible-rpi_wifi_ap
 
-- name: '[wifi_ap] Restart dhcp daemon'
+- name: '[rpi_wifi_ap] Restart dhcp daemon'
   service:
     name: isc-dhcp-server
     state: restarted
     enabled: yes
-  register: wifi_ap_dhcp_restart
+  register: rpi_wifi_ap_dhcp_restart
   ignore_errors: yes
   become: yes
 
-- name: '[wifi_ap] Reload systemd daemon'
+- name: '[rpi_wifi_ap] Reload systemd daemon'
   systemd:
     daemon_reload: yes
   become: yes
 
-- name: '[wifi_ap] Restart networking service'
+- name: '[rpi_wifi_ap] Restart networking service'
   service:
     name: networking
     state: restarted
-  register: wifi_ap_net_restart
+  register: rpi_wifi_ap_net_restart
   ignore_errors: yes
   become: yes
 
 # haven't find a solution without reboot
 # Although the reboot happens we still need all handlers to be run
-- name: '[wifi_ap] Reboot the managed host to reload iptables kernel modules and isc-dhcp-server'
+- name: '[rpi_wifi_ap] Reboot the managed host to reload iptables kernel modules and isc-dhcp-server'
   reboot:
   become: yes
-  listen: '[wifi_ap] Reboot the host'
-  when: wifi_ap_dhcp_restart.failed
-        or wifi_ap_net_restart.failed
-        or wifi_ap_iptables_install.changed
+  listen: '[rpi_wifi_ap] Reboot the host'
+  when: rpi_wifi_ap_dhcp_restart.failed
+        or rpi_wifi_ap_net_restart.failed
+        or rpi_wifi_ap_iptables_install.changed
 
-- name: '[wifi_ap] Restart hostapd daemon'
+- name: '[rpi_wifi_ap] Restart hostapd daemon'
   service:
     name: hostapd
     state: restarted
     enabled: yes
   become: yes
-  when: not wifi_ap_host_reboot.changed
+  when: not rpi_wifi_ap_host_reboot.changed
 
-- name: '[wifi_ap] Save iptables rules with iptables-save > /etc/iptables/rules.v4'
+- name: '[rpi_wifi_ap] Save iptables rules with iptables-save > /etc/iptables/rules.v4'
   shell: sh -c 'iptables-save > /etc/iptables/rules.v4'
   become: yes
 
-- name: '[wifi_ap] Notify if the networking or isc-dhcp-server service restart failed'
+- name: '[rpi_wifi_ap] Notify if the networking or isc-dhcp-server service restart failed'
   debug:
     msg:
     - "ATTENTION!"
@@ -54,5 +54,5 @@
     - "   'systemctl restart isc-dhcp-server'"
     - "the services may still function properly after the host reboot"
     - "Please run 'systemctl status' to make sure if mentioned services work"
-  when: wifi_ap_dhcp_restart.failed
-        or wifi_ap_net_restart.failed
+  when: rpi_wifi_ap_dhcp_restart.failed
+        or rpi_wifi_ap_net_restart.failed

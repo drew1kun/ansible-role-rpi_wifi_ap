@@ -3,47 +3,47 @@
 # Flush all tables first:
 - name: "[iptables] Include tasks from flush_iptables.yml"
   include_tasks: flush_iptables.yml
-  when: wifi_ap_flush_iptables
+  when: rpi_wifi_ap_flush_iptables
   tags:
-  - wifi_ap
-  - wifi_ap_iptables
+  - rpi_wifi_ap
+  - rpi_wifi_ap_iptables
 
 # -i wlan1 -o wlan0
-- name: "[iptables] iptables -A FORWARD -i {{ wifi_ap_WLAN }} -o {{ wifi_ap_WAN }} -j ACCEPT"
+- name: "[iptables] iptables -A FORWARD -i {{ rpi_wifi_ap_WLAN }} -o {{ rpi_wifi_ap_WAN }} -j ACCEPT"
   iptables:
     action: append
     chain: FORWARD
-    in_interface: "{{ wifi_ap_WLAN }}"
-    out_interface: "{{ wifi_ap_WAN }}"
+    in_interface: "{{ rpi_wifi_ap_WLAN }}"
+    out_interface: "{{ rpi_wifi_ap_WAN }}"
     jump: ACCEPT
   become: yes
-  notify: '[wifi_ap] Save iptables rules with iptables-save > /etc/iptables/rules.v4'
+  notify: '[rpi_wifi_ap] Save iptables rules with iptables-save > /etc/iptables/rules.v4'
   tags:
-  - wifi_ap
-  - wifi_ap_iptables
+  - rpi_wifi_ap
+  - rpi_wifi_ap_iptables
 
 # iptables -A FORWARD -i wlan0 -o wlan1 -m state --state RELATED,ESTABLISHED -j ACCEPT"
-- name: "[iptables] iptables -A FORWARD -i {{ wifi_ap_WAN }} -o {{ wifi_ap_WLAN }} -m state --state REL,ESTAB -j ACCEPT"
+- name: "[iptables] iptables -A FORWARD -i {{ rpi_wifi_ap_WAN }} -o {{ rpi_wifi_ap_WLAN }} -m state --state REL,ESTAB -j ACCEPT"
   iptables:
     action: append
     chain: FORWARD
-    in_interface: "{{ wifi_ap_WAN }}"
-    out_interface: "{{ wifi_ap_WLAN }}"
+    in_interface: "{{ rpi_wifi_ap_WAN }}"
+    out_interface: "{{ rpi_wifi_ap_WLAN }}"
     match: state
     ctstate: ESTABLISHED,RELATED
     jump: ACCEPT
   become: yes
-  notify: '[wifi_ap] Save iptables rules with iptables-save > /etc/iptables/rules.v4'
+  notify: '[rpi_wifi_ap] Save iptables rules with iptables-save > /etc/iptables/rules.v4'
   tags:
-  - wifi_ap
-  - wifi_ap_iptables
+  - rpi_wifi_ap
+  - rpi_wifi_ap_iptables
 
 # configure NAT between the built in wifi and the AP wifi interface:
 # -o wlan1
-- name: "[iptables] iptables -t nat -A POSTROUTING -o {{ wifi_ap_WAN }} -j MASQUERADE"
-  iptables: table=nat action=append chain=POSTROUTING out_interface="{{ wifi_ap_WAN }}" jump=MASQUERADE
+- name: "[iptables] iptables -t nat -A POSTROUTING -o {{ rpi_wifi_ap_WAN }} -j MASQUERADE"
+  iptables: table=nat action=append chain=POSTROUTING out_interface="{{ rpi_wifi_ap_WAN }}" jump=MASQUERADE
   become: yes
-  notify: '[wifi_ap] Save iptables rules with iptables-save > /etc/iptables/rules.v4'
+  notify: '[rpi_wifi_ap] Save iptables rules with iptables-save > /etc/iptables/rules.v4'
   tags:
-  - wifi_ap
-  - wifi_ap_iptables
+  - rpi_wifi_ap
+  - rpi_wifi_ap_iptables

@@ -101,14 +101,14 @@ log-facility local7;
 #  }
 #}
 
-subnet {{ wifi_ap_WLAN_subnet }} netmask {{ wifi_ap_WLAN_netmask }} {
-	range {{ wifi_ap_dhcp_range[0] }} {{ wifi_ap_dhcp_range[1] }};
-	option broadcast-address {{ wifi_ap_WLAN_broadcast }};
-	option routers {{ wifi_ap_WLAN_ip }};
+subnet {{ rpi_wifi_ap_WLAN_subnet }} netmask {{ rpi_wifi_ap_WLAN_netmask }} {
+	range {{ rpi_wifi_ap_dhcp_range[0] }} {{ rpi_wifi_ap_dhcp_range[1] }};
+	option broadcast-address {{ rpi_wifi_ap_WLAN_broadcast }};
+	option routers {{ rpi_wifi_ap_WLAN_ip }};
 	default-lease-time 600;
 	max-lease-time 7200;
-	option domain-name "{{ wifi_ap_domain }}";
-	option domain-name-servers {%for dns in wifi_ap_dns%}{{dns}}{{", " if not loop.last else ";"}}{%endfor%}
+	option domain-name "{{ rpi_wifi_ap_domain }}";
+	option domain-name-servers {%for dns in rpi_wifi_ap_dns%}{{dns}}{{", " if not loop.last else ";"}}{%endfor%}
 
 }
 

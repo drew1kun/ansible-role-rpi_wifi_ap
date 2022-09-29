@@ -1,59 +1,59 @@
 ---
-# tasks file for ansible-wifi_ap
+# tasks file for ansible-rpi_wifi_ap
 
 # dependencies
 - name: "[main] Import dependencies installation tasks"
   import_tasks: dependencies.yml
-  tags: wifi_ap
+  tags: rpi_wifi_ap
 
 # Network
-- name: "[main] /etc/network/interfaces: Find and comment all lines containing {{ wifi_ap_WLAN }}"
+- name: "[main] /etc/network/interfaces: Find and comment all lines containing {{ rpi_wifi_ap_WLAN }}"
   replace:
     path: /etc/network/interfaces
-    regexp: '(^[^#\n].*{{ wifi_ap_WLAN }}.*$)'
+    regexp: '(^[^#\n].*{{ rpi_wifi_ap_WLAN }}.*$)'
     replace: '#\1'
     before: 'iface default.*'
   notify:
-  - '[wifi_ap] Reload systemd daemon'
-  - '[wifi_ap] Restart networking service'
-  - '[wifi_ap] Reboot the host'
-  - '[wifi_ap] Notify if the networking or isc-dhcp-server service restart failed'
+  - '[rpi_wifi_ap] Reload systemd daemon'
+  - '[rpi_wifi_ap] Restart networking service'
+  - '[rpi_wifi_ap] Reboot the host'
+  - '[rpi_wifi_ap] Notify if the networking or isc-dhcp-server service restart failed'
   become: yes
-  tags: wifi_ap
+  tags: rpi_wifi_ap
 
-- name: "[main] /etc/network/interfaces: Find and comment all {{ wifi_ap_WLAN }}-related settings"
+- name: "[main] /etc/network/interfaces: Find and comment all {{ rpi_wifi_ap_WLAN }}-related settings"
   replace:
     path: /etc/network/interfaces
     regexp: '^(\s.+$)'
     replace: '#\1'
     # ATTENTION! before and after work wrong way around and this issue is still open on github.
-    before: '#iface {{ wifi_ap_WLAN }} inet manual\n'
+    before: '#iface {{ rpi_wifi_ap_WLAN }} inet manual\n'
     after: 'iface default inet dhcp'
   notify:
-  - '[wifi_ap] Reload systemd daemon'
-  - '[wifi_ap] Restart networking service'
-  - '[wifi_ap] Reboot the host'
-  - '[wifi_ap] Notify if the networking or isc-dhcp-server service restart failed'
+  - '[rpi_wifi_ap] Reload systemd daemon'
+  - '[rpi_wifi_ap] Restart networking service'
+  - '[rpi_wifi_ap] Reboot the host'
+  - '[rpi_wifi_ap] Notify if the networking or isc-dhcp-server service restart failed'
   become: yes
-  tags: wifi_ap
+  tags: rpi_wifi_ap
 
-- name: "[main] Configure {{ wifi_ap_WLAN }} (ip: {{ wifi_ap_WLAN_ip }}; netmask: {{ wifi_ap_WLAN_netmask }})
+- name: "[main] Configure {{ rpi_wifi_ap_WLAN }} (ip: {{ rpi_wifi_ap_WLAN_ip }}; netmask: {{ rpi_wifi_ap_WLAN_netmask }})
         in /etc/network/interfaces"
   blockinfile:
-    marker: '#{mark} Added by drew1kun.wifi_ap asnible role'
+    marker: '#{mark} Added by drew1kun.rpi_wifi_ap asnible role'
     path: /etc/network/interfaces
     block: |
-      auto {{ wifi_ap_WLAN }}
-      iface {{ wifi_ap_WLAN }} inet static
-        address {{ wifi_ap_WLAN_ip }}
-        netmask {{ wifi_ap_WLAN_netmask }}
+      auto {{ rpi_wifi_ap_WLAN }}
+      iface {{ rpi_wifi_ap_WLAN }} inet static
+        address {{ rpi_wifi_ap_WLAN_ip }}
+        netmask {{ rpi_wifi_ap_WLAN_netmask }}
   notify:
-  - '[wifi_ap] Reload systemd daemon'
-  - '[wifi_ap] Restart networking service'
-  - '[wifi_ap] Reboot the host'
-  - '[wifi_ap] Notify if the networking or isc-dhcp-server service restart failed'
+  - '[rpi_wifi_ap] Reload systemd daemon'
+  - '[rpi_wifi_ap] Restart networking service'
+  - '[rpi_wifi_ap] Reboot the host'
+  - '[rpi_wifi_ap] Notify if the networking or isc-dhcp-server service restart failed'
   become: yes
-  tags: wifi_ap
+  tags: rpi_wifi_ap
 
 - name: "[main] Turn on ip forwarding on in /proc and in the sysctl file and reload if necessary"
   sysctl:
@@ -63,7 +63,7 @@
     state: present
     reload: yes
   become: yes
-  tags: wifi_ap
+  tags: rpi_wifi_ap
 
 # DHCP
 - name: "[main] Generate /etc/dhcp/dhcpd.conf"
@@ -76,22 +76,22 @@
     backup: yes
   become: yes
   notify:
-  - '[wifi_ap] Restart dhcp daemon'
-  - '[wifi_ap] Reboot the host'
-  - '[wifi_ap] Notify if the networking or isc-dhcp-server service restart failed'
-  tags: wifi_ap
+  - '[rpi_wifi_ap] Restart dhcp daemon'
+  - '[rpi_wifi_ap] Reboot the host'
+  - '[rpi_wifi_ap] Notify if the networking or isc-dhcp-server service restart failed'
+  tags: rpi_wifi_ap
 
-- name: "[main] Specify 'INTERFACESv4|6={{ wifi_ap_WLAN }}' in /etc/default/isc-dhcp-server"
+- name: "[main] Specify 'INTERFACESv4|6={{ rpi_wifi_ap_WLAN }}' in /etc/default/isc-dhcp-server"
   replace:
     path: /etc/default/isc-dhcp-server
     regexp: '^(INTERFACESv[46]=)".*"'
-    replace: '\1"{{ wifi_ap_WLAN }}"'
+    replace: '\1"{{ rpi_wifi_ap_WLAN }}"'
   become: yes
   notify:
-  - '[wifi_ap] Restart dhcp daemon'
-  - '[wifi_ap] Reboot the host'
-  - '[wifi_ap] Notify if the networking or isc-dhcp-server service restart failed'
-  tags: wifi_ap
+  - '[rpi_wifi_ap] Restart dhcp daemon'
+  - '[rpi_wifi_ap] Reboot the host'
+  - '[rpi_wifi_ap] Notify if the networking or isc-dhcp-server service restart failed'
+  tags: rpi_wifi_ap
 
 - name: "[main] Disable 'INTERFACESv6' in /etc/default/isc-dhcp-server if IPv6 is not configured"
   replace:
@@ -100,11 +100,11 @@
     replace: '#\1'
   become: yes
   notify:
-  - '[wifi_ap] Restart dhcp daemon'
-  - '[wifi_ap] Reboot the host'
-  - '[wifi_ap] Notify if the networking or isc-dhcp-server service restart failed'
-  when: not wifi_ap_ipv6
-  tags: wifi_ap
+  - '[rpi_wifi_ap] Restart dhcp daemon'
+  - '[rpi_wifi_ap] Reboot the host'
+  - '[rpi_wifi_ap] Notify if the networking or isc-dhcp-server service restart failed'
+  when: not rpi_wifi_ap_ipv6
+  tags: rpi_wifi_ap
 
 # HostAPd
 - name: "[main] Generate /etc/hostapd/hostapd.conf"
@@ -115,8 +115,8 @@
     group: root
     mode: 0644
   become: yes
-  notify: '[wifi_ap] Restart hostapd daemon'
-  tags: wifi_ap
+  notify: '[rpi_wifi_ap] Restart hostapd daemon'
+  tags: rpi_wifi_ap
 
 - name: "[main] Add 'DAEMON_CONF=/etc/hostapd/hostapd.conf' to /etc/default/hostapd"
   lineinfile:
@@ -125,20 +125,20 @@
     line: 'DAEMON_CONF="/etc/hostapd/hostapd.conf"'
     state: present
   become: yes
-  notify: '[wifi_ap] Restart hostapd daemon'
-  tags: wifi_ap
+  notify: '[rpi_wifi_ap] Restart hostapd daemon'
+  tags: rpi_wifi_ap
 
 - meta: flush_handlers
-  tags: wifi_ap
+  tags: rpi_wifi_ap
 
 # IPTables (tasks/iptables.yml)
 - name: "[main] Import tasks from iptables.yml"
   import_tasks: iptables.yml
-  tags: wifi_ap
+  tags: rpi_wifi_ap
 
 - name: "[main] Access Point ESSID"
   debug:
     msg:
     - "Configuration is done"
-    - "the Access Point name: {{ wifi_ap_essid }}"
-  tags: wifi_ap
+    - "the Access Point name: {{ rpi_wifi_ap_essid }}"
+  tags: rpi_wifi_ap

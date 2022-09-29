@@ -1,9 +1,9 @@
 ---
-# vars file for ansible-wifi_ap
+# vars file for ansible-rpi_wifi_ap
 
 # Auxilary variables which don't affect the configuration,
 # but only affect the role execution
-wifi_ap_dhcp_restart: {failed: no}
-wifi_ap_net_restart: {failed: no}
-wifi_ap_iptables_install: {changed: no}
-wifi_ap_host_reboot: {changed: no}
+rpi_wifi_ap_dhcp_restart: {failed: no}
+rpi_wifi_ap_net_restart: {failed: no}
+rpi_wifi_ap_iptables_install: {changed: no}
+rpi_wifi_ap_host_reboot: {changed: no}

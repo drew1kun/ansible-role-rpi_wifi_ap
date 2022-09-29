@@ -1,4 +1,4 @@
-# Ansible role: wifi_ap
+# Ansible role: rpi_wifi_ap
 
 [![MIT licensed][mit-badge]][mit-link]
 [![Galaxy Role][role-badge]][galaxy-link]
@@ -42,23 +42,23 @@ Role Variables
 
 | Variable | Description | Default |
 |----------|-------------|---------|
-| `wifi_ap_WAN` | WAN (external) interface  | `eth0` |
-| `wifi_ap_WLAN` | WLAN (internal) wireless interface  | `wlan0` |
-| `wifi_ap_WLAN_subnet` | Network IP address for WLAN interface  | `192.168.42.0` |
-| `wifi_ap_WLAN_netmask` | Subnet mask for WLAN interface | `255.255.255.0` |
-| `wifi_ap_WLAN_broadcast` | Broadcast IP address for WLAN interface | `192.168.42.255` |
-| `wifi_ap_WLAN_ip` | IP address of WLAN interface  | `192.168.42.1` |
-| `wifi_ap_dhcp_range` | DHCP range of IP addresses | `[192.168.42.100, 192.168.42.199]` |
-| `wifi_ap_domain` | Search domain to be adertised to all clients by DHCP server | `domain.lan` |
-| `wifi_ap_domain` | List of DNS resolvers to be adertised to all clients by DHCP server | `[9.9.9.9, 9.9.9.10, 149.112.122.122]` |
-| `wifi_ap_essid` | ESSID (name) of the wifi network | `MyAP` |
-| `wifi_ap_passphrase` | WPA Passphrase for wifi network | `P@$$w0rd` |
-| `wifi_ap_flush_iptables` | no - for fresh install; yes - removes idempotency (always yellow) | `no` |
-| `wifi_ap__rpi_network_wifi_APs` | this overrides the rpi_network_wifi_APs var of rpi_network dependency role | see [`defaults/main.yml`](defaults/main.yml#L27) |
+| `rpi_wifi_ap_WAN` | WAN (external) interface  | `eth0` |
+| `rpi_wifi_ap_WLAN` | WLAN (internal) wireless interface  | `wlan0` |
+| `rpi_wifi_ap_WLAN_subnet` | Network IP address for WLAN interface  | `192.168.42.0` |
+| `rpi_wifi_ap_WLAN_netmask` | Subnet mask for WLAN interface | `255.255.255.0` |
+| `rpi_wifi_ap_WLAN_broadcast` | Broadcast IP address for WLAN interface | `192.168.42.255` |
+| `rpi_wifi_ap_WLAN_ip` | IP address of WLAN interface  | `192.168.42.1` |
+| `rpi_wifi_ap_dhcp_range` | DHCP range of IP addresses | `[192.168.42.100, 192.168.42.199]` |
+| `rpi_wifi_ap_domain` | Search domain to be adertised to all clients by DHCP server | `domain.lan` |
+| `rpi_wifi_ap_domain` | List of DNS resolvers to be adertised to all clients by DHCP server | `[9.9.9.9, 9.9.9.10, 149.112.122.122]` |
+| `rpi_wifi_ap_essid` | ESSID (name) of the wifi network | `MyAP` |
+| `rpi_wifi_ap_passphrase` | WPA Passphrase for wifi network | `P@$$w0rd` |
+| `rpi_wifi_ap_flush_iptables` | no - for fresh install; yes - removes idempotency (always yellow) | `no` |
+| `rpi_wifi_ap__rpi_network_wifi_APs` | this overrides the rpi_network_wifi_APs var of rpi_network dependency role | see [`defaults/main.yml`](defaults/main.yml#L27) |
 
 **ATTENTION!**
 
-make sure you override the **wifi_ap__rpi_network_wifi_APs** var as it contains a sensitive data for your wireless networks,
+make sure you override the **rpi_wifi_ap__rpi_network_wifi_APs** var as it contains a sensitive data for your wireless networks,
 such as WPA passphrase and network ESSID...
 
 It is highly recommended to encrypt with [ansible-vault][ansible-vault-link].
@@ -108,24 +108,24 @@ playbook:
   - vars/vault.yml
 
   roles:
-  - role: drew1kun.wifi_ap
-    wifi_ap_essid: "{{ vault_wifi_ap_essid }}"
-    wifi_ap_passphrase: "{{ vault_wifi_ap_passphrase }}"
-    wifi_ap_WAN: wlan0
-    wifi_ap_WLAN: wlan1
+  - role: drew1kun.rpi_wifi_ap
+    rpi_wifi_ap_essid: "{{ vault_rpi_wifi_ap_essid }}"
+    rpi_wifi_ap_passphrase: "{{ vault_rpi_wifi_ap_passphrase }}"
+    rpi_wifi_ap_WAN: wlan0
+    rpi_wifi_ap_WLAN: wlan1
 
     wif_ap__rpi_network_wifi_APs:
     - id_str: home
       hidden: no
-      essid: "{{ vault_wifi_ap__rpi_network_wifi_APs[0].essid }}"
-      passphrase: "{{ vault_wifi_ap__rpi_network_wifi_APs[0].passphrase }}"
+      essid: "{{ vault_rpi_wifi_ap__rpi_network_wifi_APs[0].essid }}"
+      passphrase: "{{ vault_rpi_wifi_ap__rpi_network_wifi_APs[0].passphrase }}"
       priority: 10
 
 ```
 *vars/vault.yml*:
 
 ```yaml
-vault_wifi_ap__rpi_network_wifi_APs:
+vault_rpi_wifi_ap__rpi_network_wifi_APs:
 # only sensitive stuff goes here:
 - essid: YourSensitiveESSID
   passphrase: YourSecureWPA_Passphrase
@@ -142,9 +142,9 @@ Author Information
 Andrew Shagayev | [e-mail](mailto:drewshg@gmail.com)
 
 [role-badge]: https://img.shields.io/badge/role-drew1kun.wifi__ap-green.svg
-[galaxy-link]: https://galaxy.ansible.com/drew1kun/wifi_ap/
+[galaxy-link]: https://galaxy.ansible.com/drew1kun/rpi_wifi_ap/
 [mit-badge]: https://img.shields.io/badge/license-MIT-blue.svg
-[mit-link]: https://raw.githubusercontent.com/drew1kun/ansible-wifi_ap/master/LICENSE
+[mit-link]: https://raw.githubusercontent.com/drew1kun/ansible-rpi_wifi_ap/master/LICENSE
 [minibian-link]: https://minibianpi.wordpress.com/
 [rpi-os-link]: https://www.raspberrypi.com/software/operating-systems/
 [ansible-vault-link]: https://docs.ansible.com/ansible/latest/user_guide/vault.html
