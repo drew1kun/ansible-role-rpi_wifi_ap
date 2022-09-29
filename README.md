@@ -1,5 +1,4 @@
-Ansible role: wifi_ap
-=========
+# Ansible role: wifi_ap
 
 [![MIT licensed][mit-badge]][mit-link]
 [![Galaxy Role][role-badge]][galaxy-link]
@@ -27,17 +26,18 @@ the module's `before/after` properties work other way around.
 The [issue][ansible-replace-issue-link] is still open, but may change in the future.
 
 Requirements
-------------
+----
 
-NOTE: Role requires Fact Gathering by ansible!
+**NOTE:** Role requires Fact Gathering by ansible!
 
 One of the following distros (or derivatives) required:
- - Debian | Raspbian | [Minibian][minibian-link]
+ - Debian | Raspberry Pi OS | Raspbian | [Minibian][minibian-link]
     - jessie
     - stretch
+    - bullseye
 
 Role Variables
---------------
+----
 
 | Variable | Description | Default |
 |----------|-------------|---------|
@@ -64,29 +64,37 @@ It is highly recommended to encrypt with [ansible-vault][ansible-vault-link].
 
 Before running any playbook which uses this role, decrypt the file *vars/main.yml* with:
 
-    ansible-vault decrypt vars/main.yml --vault-password-file=.vault.key
+```
+ansible-vault decrypt vars/main.yml --vault-password-file=.vault.key
+```
 
 OR set environment variable:
 
-    export ANSIBLE_VAULT_PASSWORD_FILE=.vault.key
+```
+export ANSIBLE_VAULT_PASSWORD_FILE=.vault.key
+```
 
 OR (PREFERRED):
 add the following to **ansible.cfg**:
 
-    [defaults]
-    vault_password_file = .vault.key
+```
+[defaults]
+vault_password_file = .vault.key
+```
 
 Dependencies
-------------
+----
 
  - [drew1kun.rpi_network][rpi_network-galaxy-link]
 
 Install it with galaxy:
 
-    ansible-galaxy install drew1kun.rpi_network
+```
+ansible-galaxy install drew1kun.rpi_network
+```
 
 Example Playbook
-----------------
+----
 
 As the role works with sensitive info like essid and wpa passphrase, the use of [ansible-vault][ansible-vault-link] is recommended for use in
 playbook:
@@ -123,12 +131,12 @@ vault_wifi_ap__rpi_network_wifi_APs:
 ```
 
 License
--------
+----
 
 [MIT][mit-link]
 
 Author Information
-------------------
+----
 
 Andrew Shagayev | [e-mail](mailto:drewshg@gmail.com)
 
