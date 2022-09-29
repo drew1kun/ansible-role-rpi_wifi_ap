@@ -31,7 +31,7 @@ Requirements
 **NOTE:** Role requires Fact Gathering by ansible!
 
 One of the following distros (or derivatives) required:
- - Debian | Raspberry Pi OS | Raspbian | [Minibian][minibian-link]
+ - Debian | [Raspberry Pi OS][rpi-os-link] | Raspbian | [Minibian][minibian-link]
     - jessie
     - stretch
     - bullseye
@@ -145,6 +145,7 @@ Andrew Shagayev | [e-mail](mailto:drewshg@gmail.com)
 [mit-badge]: https://img.shields.io/badge/license-MIT-blue.svg
 [mit-link]: https://raw.githubusercontent.com/drew1kun/ansible-wifi_ap/master/LICENSE
 [minibian-link]: https://minibianpi.wordpress.com/
+[rpi-os-link]: https://www.raspberrypi.com/software/operating-systems/
 [ansible-vault-link]: https://docs.ansible.com/ansible/latest/user_guide/vault.html
 [rpi_network-galaxy-link]: https://galaxy.ansible.com/drew1kun/rpi_network/
 [ansible-replace-issue-link]: https://github.com/ansible/ansible/issues/31354
