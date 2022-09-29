@@ -55,7 +55,6 @@ Role Variables
 | `wifi_ap_flush_iptables` | no - for fresh install; yes - removes idempotency (always yellow) | `no` |
 | `wifi_ap__rpi_network_wifi_APs` | this overrides the rpi_network_wifi_APs var of rpi_network dependency role | see [`defaults/main.yml`](defaults/main.yml#L27) |
 
-
 **ATTENTION!**
 
 make sure you override the **wifi_ap__rpi_network_wifi_APs** var as it contains a sensitive data for your wireless networks,
