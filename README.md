@@ -34,6 +34,7 @@ One of the following distros (or derivatives) required:
  - Debian | [Raspberry Pi OS][rpi-os-link] | Raspbian | [Minibian][minibian-link]
     - jessie
     - stretch
+    - buster
     - bullseye
 
 Role Variables
