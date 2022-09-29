@@ -21,10 +21,10 @@ wifi_ap_passphrase: P@$$w0rd
 wifi_ap_flush_iptables: no  # no - for fresh install; yes - removes idempotency (always yellow).
 
 
-# Overriding rpi3_network role defaults
+# Overriding rpi_network role defaults
 # This is needed for passing the vault-encrypted values to network role as a dependancy from playbooks.
 # NOTE: please make sure you override this in your playbooks and encrypt all sensetive data with ansible-vault
-wifi_ap__rpi3_network_wifi_APs:
+wifi_ap__rpi_network_wifi_APs:
 - id_str: home
   hidden: no            # yes | no
   essid: home_wifi      # requried
