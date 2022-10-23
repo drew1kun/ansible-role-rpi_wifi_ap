@@ -2,36 +2,30 @@ galaxy_info:
   role_name: rpi_wifi_ap
   author: Andrew Shagayev
   description: Ansible role that turns Debian based Raspberry Pi into wireless Access Point.
-
   license: MIT
-
   min_ansible_version: 2.7
-
-  github_branch: master
-
+  github_branch: main
   platforms:
-  - name: Debian
-    versions:
+    - name: Debian
+      versions:
+        - jessie
+        - stretch
+        - buster
+        - bullseye
+  galaxy_tags:
+    - raspberrypi
+    - networking
+    - wireless_access_point
+    - rpi_wifi_ap
+    - wifi_access_point
+    - debian
+    - minibian
+    - raspbian
+    - raspberry_pi_os
     - jessie
     - stretch
     - buster
     - bullseye
-
-  galaxy_tags:
-  - raspberrypi
-  - networking
-  - wireless_access_point
-  - rpi_wifi_ap
-  - wifi_access_point
-  - debian
-  - minibian
-  - raspbian
-  - raspberry_pi_os
-  - jessie
-  - stretch
-  - buster
-  - bullseye
-
 dependencies:
-- role: drew1kun.rpi_network
-  rpi_network_wifi_APs: "{{ rpi_wifi_ap__rpi_network_wifi_APs }}"
+  - role: drew1kun.rpi_network
+    rpi_network_wifi_APs: "{{ rpi_wifi_ap__rpi_network_wifi_APs }}"
